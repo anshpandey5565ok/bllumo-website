@@ -50,19 +50,19 @@ export const metadata: Metadata = {
       "One intelligent platform designed to understand your goals and build personalized experiences around you.",
     images: [
       {
-        url: "/icon.svg",
-        width: 1200,
-        height: 630,
+        url: "/android-chrome-512x512.png",
+        width: 512,
+        height: 512,
         alt: "Bllumo — AI That Builds Around Your Life",
       },
     ],
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: "Bllumo — Personalized AI for Your Life",
     description:
       "One intelligent platform designed to understand your goals and build personalized experiences around you.",
-    images: ["/icon.svg"],
+    images: ["/android-chrome-512x512.png"],
     creator: "@bllumo",
   },
   robots: {
@@ -81,11 +81,15 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/icon.svg", type: "image/svg+xml" },
       { url: "/favicon.ico" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
     ],
-    apple: [{ url: "/icon.svg" }],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
   },
+  manifest: "/site.webmanifest",
 };
 
 export default function RootLayout({
