@@ -1,0 +1,11 @@
+[
+  {
+    "id": "bfcf3821-7c51-48f2-9685-749c9125b5c7",
+    "first_name": "Jane",
+    "email": "jane.founder@example.com",
+    "interest": "Productivity",
+    "consent": true,
+    "created_at": "2026-10-03T09:15:43.807Z",
+    "source": "website"
+  }
+]
