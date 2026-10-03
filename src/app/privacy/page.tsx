@@ -121,15 +121,54 @@ export default function PrivacyPage() {
             {/* Detailed Policy Text */}
             <article className="lg:col-span-8 max-w-2xl text-neutral-300 space-y-10 text-xs sm:text-sm leading-relaxed">
               {/* 1. Introduction */}
-              <section id="intro" className="space-y-3 scroll-mt-28">
-                <h2 className="text-lg sm:text-xl font-bold text-white tracking-tight">
-                  1. Introduction
+              <section id="intro" className="space-y-4 scroll-mt-28">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-mono text-indigo-400 uppercase tracking-wider">Foundation</span>
+                  <span className="text-neutral-600">•</span>
+                  <span className="text-xs text-neutral-400 font-mono">Our Privacy Commitment</span>
+                </div>
+
+                <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
+                  1. Introduction & Privacy Philosophy
                 </h2>
-                <p>
-                  Bllumo (&ldquo;we,&rdquo; &ldquo;our,&rdquo; or &ldquo;us&rdquo;) respects user privacy. This Privacy Policy describes how information is collected, processed, and safeguarded when you visit our website (bllumo.com) and participate in our pre-launch waitlist.
+
+                <p className="text-sm sm:text-base text-neutral-200 leading-relaxed font-normal">
+                  At Bllumo, we believe that software can only truly adapt to a person&apos;s life if it earns and honors their absolute trust. Privacy is not a compliance afterthought or hidden fine print—it is a core engineering principle that guides how we build our systems from day one.
                 </p>
-                <p>
-                  Bllumo is currently an early-stage startup developing an adaptive personal AI platform. This policy is explicitly tailored to the current informational website and waitlist operations.
+
+                <p className="text-neutral-400 leading-relaxed">
+                  This Privacy Policy explains with complete clarity how Bllumo (&ldquo;we,&rdquo; &ldquo;our,&rdquo; or &ldquo;us&rdquo;) collects, protects, and respects your information when you visit <strong className="text-neutral-200 font-medium">bllumo.com</strong> and participate in our pre-launch early-access waitlist.
+                </p>
+
+                {/* Core Commitments Card */}
+                <div className="surface-card rounded-xl p-5 border border-white/[0.08] space-y-3 my-4">
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-neutral-300 block font-semibold">
+                    Three Guiding Principles for Our Waitlist:
+                  </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
+                    <div className="space-y-1">
+                      <span className="text-xs font-semibold text-white block">1. Minimal by Design</span>
+                      <p className="text-[11px] text-neutral-400 leading-normal">
+                        We ask only for what is necessary to reserve your early spot and send product updates.
+                      </p>
+                    </div>
+                    <div className="space-y-1">
+                      <span className="text-xs font-semibold text-white block">2. Never Monetized</span>
+                      <p className="text-[11px] text-neutral-400 leading-normal">
+                        We do not sell, rent, or trade your personal information with third-party advertisers. Ever.
+                      </p>
+                    </div>
+                    <div className="space-y-1">
+                      <span className="text-xs font-semibold text-white block">3. Complete Control</span>
+                      <p className="text-[11px] text-neutral-400 leading-normal">
+                        You retain total authority to review, update, or permanently delete your waitlist record anytime.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <p className="text-xs text-neutral-400 leading-relaxed">
+                  Bllumo is currently an early-stage startup developing an adaptive personal AI platform. This policy is explicitly tailored to this public pre-launch website and waitlist. As our platform progresses toward private alpha releases, comprehensive product-level data governance terms will be introduced with the same high standard of transparency.
                 </p>
               </section>
 
