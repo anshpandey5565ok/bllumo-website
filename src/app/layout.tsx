@@ -50,7 +50,7 @@ export const metadata: Metadata = {
       "One intelligent platform designed to understand your goals and build personalized experiences around you.",
     images: [
       {
-        url: "/og-image.png",
+        url: "/icon.svg",
         width: 1200,
         height: 630,
         alt: "Bllumo — AI That Builds Around Your Life",
@@ -62,7 +62,7 @@ export const metadata: Metadata = {
     title: "Bllumo — Personalized AI for Your Life",
     description:
       "One intelligent platform designed to understand your goals and build personalized experiences around you.",
-    images: ["/og-image.png"],
+    images: ["/icon.svg"],
     creator: "@bllumo",
   },
   robots: {
@@ -84,7 +84,7 @@ export const metadata: Metadata = {
       { url: "/icon.svg", type: "image/svg+xml" },
       { url: "/favicon.ico" },
     ],
-    apple: [{ url: "/apple-icon.png" }],
+    apple: [{ url: "/icon.svg" }],
   },
 };
 
