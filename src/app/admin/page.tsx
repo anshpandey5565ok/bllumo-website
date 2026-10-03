@@ -18,6 +18,7 @@ import {
   AlertCircle,
   FileSpreadsheet,
 } from "lucide-react";
+import { Logo } from "@/components/Logo";
 
 interface WaitlistRecord {
   id: string;
@@ -109,9 +110,9 @@ export default function AdminPage() {
       {/* Admin Top Header */}
       <header className="border-b border-white/10 bg-[#0D111C]/80 backdrop-blur-md px-6 py-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-lg font-bold tracking-tight text-white">Bllumo</span>
-            <span className="text-xs px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-mono">
+          <Link href="/" className="group flex items-center gap-2">
+            <Logo size={24} showWordmark={true} />
+            <span className="text-[11px] px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 font-mono">
               Admin Portal
             </span>
           </Link>

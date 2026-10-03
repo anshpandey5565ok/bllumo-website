@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import { Logo } from "@/components/Logo";
 
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -38,29 +39,12 @@ export function Navbar() {
           {/* Logo & Brand */}
           <Link
             href="/"
-            className="flex items-center gap-2.5 text-white focus:outline-none focus-visible:ring-1 focus-visible:ring-white/40 rounded-md"
+            className="group flex items-center gap-2.5 text-white focus:outline-none focus-visible:ring-1 focus-visible:ring-white/40 rounded-md"
           >
-            {/* Minimalist Logo Mark */}
-            <div className="w-7 h-7 rounded-lg bg-white/[0.06] border border-white/[0.1] flex items-center justify-center p-1">
-              <svg viewBox="0 0 100 100" className="w-full h-full" fill="none">
-                <path
-                  d="M32 50 C32 38, 44 32, 50 42 C56 52, 68 62, 68 50 C68 38, 56 32, 50 42 C44 52, 32 62, 32 50 Z"
-                  stroke="#FFFFFF"
-                  strokeWidth="8"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-                <circle cx="50" cy="42" r="5" fill="#818CF8" />
-              </svg>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="text-base font-semibold tracking-tight text-white">
-                Bllumo
-              </span>
-              <span className="text-[10px] uppercase font-mono tracking-wider px-1.5 py-0.5 rounded bg-white/[0.04] text-neutral-400 border border-white/[0.06]">
-                Pre-launch
-              </span>
-            </div>
+            <Logo size={28} showWordmark={true} />
+            <span className="text-[10px] uppercase font-mono tracking-wider px-1.5 py-0.5 rounded bg-white/[0.04] text-neutral-400 border border-white/[0.06]">
+              Pre-launch
+            </span>
           </Link>
 
           {/* Desktop Navigation Links */}

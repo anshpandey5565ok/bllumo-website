@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { Logo } from "@/components/Logo";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -19,20 +20,8 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8 pb-12 border-b border-white/[0.06]">
           {/* Brand Summary */}
           <div className="md:col-span-2 space-y-3">
-            <Link href="/" className="flex items-center gap-2 text-white">
-              <div className="w-5 h-5 rounded bg-white/[0.08] flex items-center justify-center p-0.5">
-                <svg viewBox="0 0 100 100" className="w-full h-full" fill="none">
-                  <path
-                    d="M32 50 C32 38, 44 32, 50 42 C56 52, 68 62, 68 50 C68 38, 56 32, 50 42 C44 52, 32 62, 32 50 Z"
-                    stroke="#FFFFFF"
-                    strokeWidth="8"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <circle cx="50" cy="42" r="6" fill="#818CF8" />
-                </svg>
-              </div>
-              <span className="text-sm font-semibold tracking-tight text-white">Bllumo</span>
+            <Link href="/" className="group inline-flex items-center text-white">
+              <Logo size={24} showWordmark={true} />
             </Link>
 
             <p className="text-neutral-400 text-xs leading-relaxed max-w-sm">
