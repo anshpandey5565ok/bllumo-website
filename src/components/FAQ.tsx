@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronDown, HelpCircle } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import Link from "next/link";
 
 interface FAQItem {
@@ -33,22 +33,22 @@ const FAQS: FAQItem[] = [
   {
     question: "When will Bllumo launch?",
     answer:
-      "We have not announced a public launch date yet. Join the waitlist to receive updates as we finalize our private alpha and public beta milestones.",
+      "We have not announced a public launch date yet. Join the waitlist to receive updates.",
   },
   {
     question: "Will Bllumo be free?",
     answer:
-      "Pricing and plan details have not yet been finalized. Early waitlist members will receive priority onboarding opportunities and launch notifications.",
+      "Pricing and plan details have not yet been finalized.",
   },
   {
     question: "How will Bllumo use my waitlist information?",
     answer: (
       <span>
-        We use waitlist information to manage early-access interest and communicate relevant product and launch updates. We do not sell personal data. See our{" "}
-        <Link href="/privacy" className="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">
+        We use waitlist information to manage early-access interest and communicate relevant product and launch updates. See our{" "}
+        <Link href="/privacy" className="text-neutral-300 underline underline-offset-2 hover:text-white">
           Privacy Policy
         </Link>{" "}
-        for full details.
+        for details.
       </span>
     ),
   },
@@ -57,55 +57,42 @@ const FAQS: FAQItem[] = [
 export function FAQ() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  const toggleAccordion = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
-
   return (
-    <section id="faq" className="py-20 md:py-32 relative bg-[#0D111C]/30 border-t border-white/5">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center max-w-2xl mx-auto mb-16">
-          <span className="text-xs font-semibold tracking-wider uppercase text-cyan-400 mb-3 block">
-            CLARITY & TRANSPARENCY
+    <section id="faq" className="py-20 md:py-28 relative border-t border-white/[0.06] bg-[#07090E]">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-16">
+          <span className="text-xs font-mono uppercase tracking-wider text-neutral-400 mb-2 block">
+            FAQ
           </span>
-          <h2 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-4">
+          <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-3">
             Frequently Asked Questions
           </h2>
-          <p className="text-base text-slate-300">
-            Everything you need to know about Bllumo, our development progress, and how early access works.
+          <p className="text-sm text-neutral-400">
+            Common questions regarding Bllumo and the early access process.
           </p>
         </div>
 
-        {/* Accordion Container */}
-        <div className="space-y-3.5">
+        <div className="divide-y divide-white/[0.06] border-y border-white/[0.06]">
           {FAQS.map((faq, index) => {
             const isOpen = openIndex === index;
             return (
-              <div
-                key={faq.question}
-                className="rounded-2xl bg-[#070A12]/90 border border-white/8 hover:border-white/15 transition-all overflow-hidden"
-              >
+              <div key={faq.question} className="py-4">
                 <button
                   type="button"
-                  onClick={() => toggleAccordion(index)}
+                  onClick={() => setOpenIndex(isOpen ? null : index)}
                   aria-expanded={isOpen}
-                  className="w-full py-5 px-6 sm:px-7 text-left flex items-center justify-between gap-4 focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500"
+                  className="w-full text-left flex items-center justify-between gap-4 py-1 text-sm sm:text-base font-medium text-white hover:text-neutral-300 transition-colors"
                 >
-                  <span className="text-base sm:text-lg font-semibold text-white">
-                    {faq.question}
-                  </span>
-                  <div
-                    className={`w-7 h-7 rounded-lg bg-white/[0.04] border border-white/10 flex items-center justify-center shrink-0 text-slate-300 transition-transform duration-200 ${
-                      isOpen ? "rotate-180 text-cyan-400 bg-cyan-500/10 border-cyan-500/30" : ""
+                  <span>{faq.question}</span>
+                  <ChevronDown
+                    className={`w-4 h-4 text-neutral-400 shrink-0 transition-transform duration-150 ${
+                      isOpen ? "rotate-180 text-white" : ""
                     }`}
-                  >
-                    <ChevronDown className="w-4 h-4" />
-                  </div>
+                  />
                 </button>
 
                 {isOpen && (
-                  <div className="px-6 sm:px-7 pb-6 pt-1 text-sm sm:text-base text-slate-300 leading-relaxed border-t border-white/5">
+                  <div className="pt-3 pb-1 text-xs sm:text-sm text-neutral-400 leading-relaxed">
                     {faq.answer}
                   </div>
                 )}
@@ -114,13 +101,9 @@ export function FAQ() {
           })}
         </div>
 
-        {/* Additional Questions note */}
-        <div className="mt-12 text-center text-xs text-slate-400">
-          Have an additional question? Reach out to us at{" "}
-          <a
-            href="mailto:hello@bllumo.com"
-            className="text-indigo-400 hover:text-indigo-300 underline underline-offset-2"
-          >
+        <div className="mt-8 text-center text-xs text-neutral-500">
+          Have an additional question? Reach out to{" "}
+          <a href="mailto:hello@bllumo.com" className="text-neutral-400 hover:text-white underline">
             hello@bllumo.com
           </a>
         </div>

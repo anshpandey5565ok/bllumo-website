@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
-import { ArrowLeft, Scale, Mail, MapPin } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "Terms of Service",
@@ -14,16 +14,16 @@ export default function TermsPage() {
   const lastUpdated = "October 2026";
 
   return (
-    <div className="min-h-screen bg-[#070A12] text-[#F8FAFC] flex flex-col">
+    <div className="min-h-screen bg-[#060709] text-[#EDEDED] flex flex-col">
       <Navbar />
 
       <main className="flex-grow pt-32 pb-24">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
           {/* Back link */}
           <div className="mb-8">
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 text-xs font-mono text-neutral-400 hover:text-white transition-colors"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span>Back to Bllumo</span>
@@ -31,216 +31,137 @@ export default function TermsPage() {
           </div>
 
           {/* Header */}
-          <div className="pb-8 border-b border-white/10 mb-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-xs font-semibold uppercase tracking-wider text-indigo-300 mb-4">
-              <Scale className="w-3.5 h-3.5 text-cyan-400" />
+          <div className="pb-8 border-b border-white/[0.06] mb-12">
+            <span className="text-xs font-mono uppercase tracking-wider text-neutral-400 mb-2 block">
               Legal Agreements
-            </div>
-            <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight mb-3">
+            </span>
+            <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-3">
               Terms of Service
             </h1>
-            <p className="text-sm font-mono text-slate-400">
-              Last updated: {lastUpdated}
+            <p className="text-xs font-mono text-neutral-400">
+              Last updated: {lastUpdated} • Pre-Launch Website & Waitlist
             </p>
           </div>
 
-          {/* Terms Content */}
-          <div className="prose prose-invert max-w-none text-slate-300 space-y-8 text-sm sm:text-base leading-relaxed">
-            {/* 1. Acceptance */}
-            <section className="space-y-3">
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                1. Acceptance of Terms
-              </h2>
-              <p>
-                By accessing or using the Bllumo website (bllumo.com) or submitting your details to the Bllumo waitlist, you agree to be bound by these Terms of Service (&ldquo;Terms&rdquo;). If you do not agree to these Terms, please do not use our website or register for the waitlist.
+          {/* Content */}
+          <div className="space-y-8 text-xs sm:text-sm text-neutral-300 leading-relaxed">
+            <section className="space-y-2">
+              <h2 className="text-base font-semibold text-white">1. Acceptance of Terms</h2>
+              <p className="text-neutral-400">
+                By accessing this website or joining the waitlist, you agree to these Terms. If you disagree, please do not use the website or submit the waitlist form.
               </p>
             </section>
 
-            {/* 2. About Bllumo */}
-            <section className="space-y-3">
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                2. About Bllumo & Pre-Launch Status
-              </h2>
-              <p>
-                Bllumo is currently an early-stage technology startup project in active development. Product capabilities, concepts, workflows, interface mockups, and demonstrations presented on this website represent our current developmental vision and are subject to change. Bllumo services are not yet commercially available for general public release.
+            <section className="space-y-2">
+              <h2 className="text-base font-semibold text-white">2. About Bllumo & Pre-Launch Status</h2>
+              <p className="text-neutral-400">
+                Bllumo is currently an early-stage startup under development. Product functionality, workflows, and mockups described on this website represent our developmental vision, may change before release, and are not yet commercially available.
               </p>
             </section>
 
-            {/* 3. Eligibility */}
-            <section className="space-y-3">
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                3. Eligibility
-              </h2>
-              <p>
-                You must possess the legal capacity to enter into binding agreements under applicable law. If you are under 18 or the age of majority in your jurisdiction, you may only access the website and join the waitlist with the consent and supervision of a parent or legal guardian. The website is not directed to individuals under 13 years of age.
+            <section className="space-y-2">
+              <h2 className="text-base font-semibold text-white">3. Eligibility</h2>
+              <p className="text-neutral-400">
+                You must possess the legal capacity to accept these Terms. The website is not directed to individuals under 13 years of age.
               </p>
             </section>
 
-            {/* 4. Waitlist Terms */}
-            <section className="space-y-3">
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                4. Waitlist Registration & Availability
-              </h2>
-              <p>
-                Joining the Bllumo waitlist expresses your interest in receiving development updates and prospective early-access invitations. Joining the waitlist does <strong>not</strong> guarantee:
-              </p>
-              <ul className="list-disc pl-5 space-y-1.5 text-slate-300">
-                <li>Immediate or future access to any software product or feature.</li>
-                <li>A specific commercial launch date or timeline.</li>
-                <li>Free or discounted access to future paid services.</li>
-                <li>The inclusion of any specific feature or functionality in future software releases.</li>
-                <li>Any particular numeric queue position or priority, unless explicitly agreed in writing by Bllumo.</li>
-              </ul>
-              <p>
-                Bllumo reserves the right to manage, modify, suspend, or discontinue the waitlist program at its sole discretion at any time without liability.
+            <section className="space-y-2">
+              <h2 className="text-base font-semibold text-white">4. Waitlist Terms</h2>
+              <p className="text-neutral-400">
+                Joining the waitlist expresses interest in early access and product updates. Joining does not guarantee product access, a specific launch date, free service, particular features, or any position or priority. Bllumo may modify or discontinue the waitlist at any time.
               </p>
             </section>
 
-            {/* 5. Communications */}
-            <section className="space-y-3">
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                5. Communications
-              </h2>
-              <p>
-                By joining the waitlist and providing your email address, you consent to receive periodic communications regarding Bllumo product updates, development milestones, survey invitations, and launch news. You may opt out of promotional emails at any time using the unsubscribe link provided in every message.
+            <section className="space-y-2">
+              <h2 className="text-base font-semibold text-white">5. Communications</h2>
+              <p className="text-neutral-400">
+                Users joining the waitlist consent to relevant Bllumo product communications and can unsubscribe at any time via the link in emails.
               </p>
             </section>
 
-            {/* 6. Acceptable Use */}
-            <section className="space-y-3">
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                6. Acceptable Use
-              </h2>
-              <p>When interacting with this website, you agree not to:</p>
-              <ul className="list-disc pl-5 space-y-1.5 text-slate-300">
-                <li>Deploy automated bots, spiders, or scrapers to excessively harvest content or flood submission forms.</li>
-                <li>Probe, scan, or test the vulnerability of our systems or breach security mechanisms.</li>
-                <li>Introduce viruses, worms, Trojan horses, or other malicious computer code.</li>
-                <li>Submit false, fraudulent, or impersonated identity or contact details.</li>
-                <li>Use the website in any manner that violates applicable municipal, national, or international laws.</li>
-              </ul>
-            </section>
-
-            {/* 7. Intellectual Property */}
-            <section className="space-y-3">
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                7. Intellectual Property Rights
-              </h2>
-              <p>
-                All trademarks, service marks, logos, brand names, designs, software interfaces, copy, code, graphics, and product concepts displayed on this website are the proprietary intellectual property of Bllumo and its licensors. You may not copy, reproduce, distribute, or create derivative works from any part of this website without our prior written consent, except for standard personal browser viewing.
+            <section className="space-y-2">
+              <h2 className="text-base font-semibold text-white">6. Acceptable Use</h2>
+              <p className="text-neutral-400">
+                You agree not to attack the website, scrape it abusively, attempt unauthorized access, introduce malware, misuse forms, impersonate others, or violate applicable laws.
               </p>
             </section>
 
-            {/* 8. User Feedback */}
-            <section className="space-y-3">
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                8. Product Feedback & Suggestions
-              </h2>
-              <p>
-                If you choose to submit comments, ideas, or feature suggestions regarding Bllumo, you acknowledge and agree that Bllumo may freely use, adapt, and incorporate such feedback into its platform without any obligation of compensation, attribution, or confidentiality to you. We do not claim ownership over any unintended confidential disclosures.
+            <section className="space-y-2">
+              <h2 className="text-base font-semibold text-white">7. Intellectual Property</h2>
+              <p className="text-neutral-400">
+                Bllumo branding, designs, website content, product concepts, graphics, copy, logos, and software are owned by Bllumo or applicable licensors. You may not reproduce them beyond normal personal browsing without written permission.
               </p>
             </section>
 
-            {/* 9. Third-Party Services */}
-            <section className="space-y-3">
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                9. Third-Party Infrastructure
-              </h2>
-              <p>
-                This website is delivered using modern third-party cloud hosting, content delivery, database, and email infrastructure providers. We do not control and are not responsible for any intermittent interruptions caused by third-party provider outages.
+            <section className="space-y-2">
+              <h2 className="text-base font-semibold text-white">8. Feedback</h2>
+              <p className="text-neutral-400">
+                If you voluntarily provide product suggestions, Bllumo may use that feedback to improve its products without obligation of compensation.
               </p>
             </section>
 
-            {/* 10. Future AI Services */}
-            <section className="space-y-3">
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                10. Descriptions of Future AI Services
-              </h2>
-              <p>
-                All descriptions of planned AI functionalities, adaptive behaviors, cross-domain intelligence, and scheduling systems are for informational and conceptual illustration only. Final product specifications may differ substantially upon commercial deployment.
+            <section className="space-y-2">
+              <h2 className="text-base font-semibold text-white">9. Third-Party Services</h2>
+              <p className="text-neutral-400">
+                The website relies on third-party hosting, database, email, and infrastructure services.
               </p>
             </section>
 
-            {/* 11. Health Disclaimer */}
-            <section className="space-y-3 p-5 rounded-2xl bg-white/[0.02] border border-white/8">
-              <h2 className="text-xl font-bold text-white tracking-tight">
-                11. Health & Medical Disclaimer
-              </h2>
-              <p className="text-sm">
-                Bllumo is not a licensed healthcare provider, medical clinic, or medical device manufacturer. Content and conceptual features described on this website are strictly for personal organizational and general lifestyle planning purposes. Nothing on this website constitutes medical diagnosis, treatment advice, or emergency health management. Always consult a qualified physician or healthcare professional for medical concerns.
+            <section className="space-y-2">
+              <h2 className="text-base font-semibold text-white">10. Future AI Services</h2>
+              <p className="text-neutral-400">
+                Descriptions of planned AI functionality are informational and may change before release.
               </p>
             </section>
 
-            {/* 12. Financial Disclaimer */}
-            <section className="space-y-3 p-5 rounded-2xl bg-white/[0.02] border border-white/8">
-              <h2 className="text-xl font-bold text-white tracking-tight">
-                12. Financial & Investment Disclaimer
-              </h2>
-              <p className="text-sm">
-                Bllumo is not a bank, broker-dealer, investment advisor, tax consultant, or licensed financial institution. Nothing on this website or in our waitlist updates constitutes personalized financial, investment, accounting, tax, or legal advice. Any future money management features will be designed as organizational support tools, not fiduciary advisory services.
+            <section className="space-y-2 surface-card p-4 rounded-xl">
+              <h2 className="text-base font-semibold text-white">11. Health Disclaimer</h2>
+              <p className="text-neutral-400">
+                Bllumo is not a medical provider and does not provide diagnosis, treatment, or emergency medical services. Content on this website is for general informational and planning support only.
               </p>
             </section>
 
-            {/* 13. No Professional Relationship */}
-            <section className="space-y-3">
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                13. No Professional Relationship
-              </h2>
-              <p>
-                Accessing this website, interacting with demonstrations, or joining the waitlist does not establish a doctor-patient, fiduciary, attorney-client, or other licensed professional relationship between you and Bllumo.
+            <section className="space-y-2 surface-card p-4 rounded-xl">
+              <h2 className="text-base font-semibold text-white">12. Financial Disclaimer</h2>
+              <p className="text-neutral-400">
+                Bllumo is not a bank, broker, investment adviser, lender, or financial institution. Information provided through future services should not be considered personalized investment, tax, or legal advice.
               </p>
             </section>
 
-            {/* 14. Disclaimer of Warranties */}
-            <section className="space-y-3">
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                14. Disclaimer of Warranties
-              </h2>
-              <p>
-                To the maximum extent permitted by applicable law, this website and waitlist are provided on an &ldquo;as is&rdquo; and &ldquo;as available&rdquo; basis without warranties of any kind, whether express, statutory, or implied, including warranties of merchantability, fitness for a particular purpose, and non-infringement.
+            <section className="space-y-2">
+              <h2 className="text-base font-semibold text-white">13. No Professional Relationship</h2>
+              <p className="text-neutral-400">
+                Accessing the website does not create a doctor-patient, adviser-client, attorney-client, fiduciary, or similar professional relationship.
               </p>
             </section>
 
-            {/* 15. Limitation of Liability */}
-            <section className="space-y-3">
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                15. Limitation of Liability
-              </h2>
-              <p>
-                To the fullest extent permitted under law, Bllumo and its founders, affiliates, and contractors shall not be liable for any indirect, incidental, consequential, special, or punitive damages arising from your access to or inability to access this website or participation in the waitlist.
+            <section className="space-y-2">
+              <h2 className="text-base font-semibold text-white">14. Disclaimer of Warranties</h2>
+              <p className="text-neutral-400">
+                To the extent permitted by law, the website is provided on an &ldquo;as is&rdquo; and &ldquo;as available&rdquo; basis.
               </p>
             </section>
 
-            {/* 16. Indemnification */}
-            <section className="space-y-3">
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                16. Indemnification
-              </h2>
-              <p>
-                You agree to defend, indemnify, and hold harmless Bllumo and its team against any claims, losses, liabilities, and expenses arising out of your misuse of this website or violation of these Terms.
+            <section className="space-y-2">
+              <h2 className="text-base font-semibold text-white">15. Limitation of Liability</h2>
+              <p className="text-neutral-400">
+                To the fullest extent permitted by applicable law, Bllumo shall not be liable for any indirect, incidental, or consequential damages resulting from your use of this website.
               </p>
             </section>
 
-            {/* 17. Governing Law */}
-            <section className="space-y-3">
-              <h2 className="text-xl sm:text-2xl font-bold text-white tracking-tight">
-                17. Governing Law & Dispute Resolution
-              </h2>
-              <p>
-                These Terms will be governed by the laws applicable to [LEGAL ENTITY/JURISDICTION], subject to mandatory consumer protection laws in your local jurisdiction.
+            <section className="space-y-2">
+              <h2 className="text-base font-semibold text-white">16. Governing Law</h2>
+              <p className="text-neutral-400">
+                These Terms will be governed by the laws applicable to [LEGAL ENTITY/JURISDICTION], subject to mandatory consumer protection laws.
               </p>
             </section>
 
-            {/* 18. Changes & Contact */}
-            <section className="space-y-3 p-6 rounded-2xl bg-white/[0.02] border border-white/8">
-              <h2 className="text-xl font-bold text-white tracking-tight">
-                18. Contact & Legal Inquiries
-              </h2>
-              <p>For questions concerning these Terms, contact our legal desk:</p>
-              <div className="space-y-1 text-sm text-slate-300">
+            <section className="space-y-2 p-4 rounded-xl surface-card">
+              <h2 className="text-base font-semibold text-white">17. Legal Contact</h2>
+              <div className="space-y-1 text-xs text-neutral-300">
                 <p><strong className="text-white">Organization:</strong> Bllumo</p>
-                <p><strong className="text-white">Legal Inquiries:</strong> <a href="mailto:legal@bllumo.com" className="text-indigo-400 underline">legal@bllumo.com</a></p>
-                <p><strong className="text-white">General Inquiries:</strong> <a href="mailto:hello@bllumo.com" className="text-indigo-400 underline">hello@bllumo.com</a></p>
+                <p><strong className="text-white">Legal Inquiries:</strong> <a href="mailto:legal@bllumo.com" className="text-neutral-200 underline">legal@bllumo.com</a></p>
                 <p><strong className="text-white">Country:</strong> India</p>
               </div>
             </section>
