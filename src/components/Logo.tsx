@@ -6,13 +6,13 @@ interface LogoProps {
   showWordmark?: boolean;
 }
 
-export function Logo({ className = "", size = 28, showWordmark = true }: LogoProps) {
+export function Logo({ className = "", size = 26, showWordmark = true }: LogoProps) {
   return (
     <div className={`flex items-center gap-2.5 ${className}`}>
-      {/* Icon Glyph */}
+      {/* Production-grade Architectural Bllumo Glyph */}
       <div
         style={{ width: size, height: size }}
-        className="relative shrink-0 rounded-lg overflow-hidden flex items-center justify-center p-0.5 bg-[#0A0C14] border border-white/[0.1] shadow-sm transition-transform duration-200 group-hover:scale-105"
+        className="relative shrink-0 rounded-lg bg-white/[0.08] hover:bg-white/[0.12] border border-white/[0.12] flex items-center justify-center p-1 transition-all duration-150"
       >
         <svg
           viewBox="0 0 100 100"
@@ -20,53 +20,34 @@ export function Logo({ className = "", size = 28, showWordmark = true }: LogoPro
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
+          {/* Upper Adaptive Arc */}
+          <path
+            d="M26 22 H54 C66 22 75 30 75 41 C75 48 70 52 61 54 L38 54 C31.4 54 26 48.6 26 42 Z"
+            fill="#FFFFFF"
+          />
+          {/* Upper Counter Cutout */}
+          <circle cx="51" cy="38" r="7" fill="#0B0D14" />
+
+          {/* Lower Grounding Arc (Interlocking with a 3px architectural offset) */}
+          <path
+            d="M26 48 L60 48 C71 48 79 55 79 65 C79 75 70 82 56 82 H26 V48 Z"
+            fill="url(#bllumoMarkGradient)"
+          />
+          {/* Lower Counter Cutout */}
+          <circle cx="53" cy="65" r="8" fill="#0B0D14" />
+
           <defs>
-            <linearGradient id="logoRibbonGrad" x1="15%" y1="10%" x2="85%" y2="90%">
-              <stop offset="0%" stopColor="#818CF8" />
-              <stop offset="50%" stopColor="#6366F1" />
-              <stop offset="100%" stopColor="#06B6D4" />
+            <linearGradient id="bllumoMarkGradient" x1="26" y1="48" x2="79" y2="82" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stopColor="#FFFFFF" />
+              <stop offset="100%" stopColor="#94A3B8" />
             </linearGradient>
           </defs>
-
-          {/* Precision engineered continuous curves representing life adaptation & personal intelligence */}
-          <path
-            d="M32 25 C32 22.8, 33.8 21, 36 21 L42 21 C53.5 21, 62 28, 62 37.5 C62 44.5, 57 49, 50 50 C58.5 51, 65 56.5, 65 65 C65 74.5, 55.5 81, 42 81 L36 81 C33.8 81, 32 79.2, 32 77 Z"
-            fill="none"
-            stroke="url(#logoRibbonGrad)"
-            strokeWidth="7.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-
-          {/* Dynamic Inner Voids */}
-          <path
-            d="M42 33 L45 33 C50 33, 53.5 35.5, 53.5 39 C53.5 42.5, 50 45, 45 45 L42 45 Z"
-            fill="none"
-            stroke="#FFFFFF"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.9"
-          />
-          <path
-            d="M42 55 L46 55 C52 55, 56 58, 56 62.5 C56 67, 52 70, 46 70 L42 70 Z"
-            fill="none"
-            stroke="#FFFFFF"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            opacity="0.9"
-          />
-
-          {/* Intelligent Nexus Indicator */}
-          <circle cx="50" cy="50" r="3.5" fill="#38BDF8" />
-          <circle cx="50" cy="50" r="1.5" fill="#FFFFFF" />
         </svg>
       </div>
 
       {/* Wordmark */}
       {showWordmark && (
-        <span className="text-base font-semibold tracking-tight text-white group-hover:text-neutral-100 transition-colors">
+        <span className="text-sm font-semibold tracking-tight text-white transition-colors">
           Bllumo
         </span>
       )}
