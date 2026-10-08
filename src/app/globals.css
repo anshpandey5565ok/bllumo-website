@@ -4,15 +4,16 @@
   --background: #060709;
   --background-subtle: #0B0D13;
   --card-surface: #0E1118;
-  --border-subtle: rgba(255, 255, 255, 0.07);
-  --border-hover: rgba(255, 255, 255, 0.15);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.18);
   --foreground: #EDEDED;
-  --foreground-muted: #888891;
+  --foreground-muted: #94A3B8;
   --accent-primary: #6366F1;
 }
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5.5rem;
   color-scheme: dark;
 }
 
@@ -25,22 +26,28 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Accessible Global Keyboard Focus Indicators */
+:focus-visible {
+  outline: 2px solid #818CF8 !important;
+  outline-offset: 2px !important;
+}
+
 /* Hairline borders and subtle surfaces */
 .surface-card {
   background-color: #0B0D14;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   transition: border-color 0.2s ease, transform 0.2s ease;
 }
 
 .surface-card:hover {
-  border-color: rgba(255, 255, 255, 0.14);
+  border-color: rgba(255, 255, 255, 0.16);
 }
 
 .glass-header {
-  background: rgba(6, 7, 9, 0.75);
+  background: rgba(6, 7, 9, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 /* Subtle glow, used sparingly and strictly for focal hierarchy */

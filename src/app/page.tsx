@@ -11,6 +11,9 @@ import { FAQ } from "@/components/FAQ";
 import { About } from "@/components/About";
 import { FinalCTA } from "@/components/FinalCTA";
 import { Footer } from "@/components/Footer";
+import { publicReleasePolicy } from "@/lib/releasePolicy";
+
+export const dynamic = "force-dynamic";
 
 export default function Home() {
   return (
@@ -18,31 +21,31 @@ export default function Home() {
       {/* 1. Navigation */}
       <Navbar />
 
-      {/* Main Content Sections */}
-      <main className="flex-grow">
+      {/* Main Content Sections with Accessible Target Anchor */}
+      <main id="main-content" className="flex-grow">
         {/* 2. Hero */}
         <Hero />
 
-        {/* 3. One Platform, Many Goals */}
+        {/* 3. Product Scope & Initial Audience */}
         <GoalCards />
 
         {/* 4. How Bllumo Works */}
         <HowItWorks />
 
-        {/* 5. Personalized by Design */}
+        {/* 5. Approach & Differentiation */}
         <Personalization />
 
-        {/* 6. Adaptive to Real Life */}
+        {/* 6. Real-World Adaptation */}
         <Adaptation />
 
-        {/* 7. Bllumo Vision */}
+        {/* 7. Long-Term Vision */}
         <Vision />
 
-        {/* 8. Responsible AI / Trust */}
+        {/* 8. Responsible AI & Safeguards */}
         <Trust />
 
         {/* 9. Early Access Waitlist */}
-        <WaitlistForm />
+        <WaitlistForm enabled={publicReleasePolicy().enabled} />
 
         {/* 10. FAQ */}
         <FAQ />

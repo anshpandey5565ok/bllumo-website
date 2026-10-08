@@ -12,49 +12,49 @@ interface Scenario {
 
 const SCENARIOS: Scenario[] = [
   {
-    title: "Travel & Relocation",
-    badge: "Mobility",
-    description: "Your normal routine may pause while traveling.",
+    title: "Travel & Transit Days",
+    badge: "Environment Shift",
+    description: "Regular workout or meal prep routines are disrupted while traveling.",
     plannedAdjustment:
-      "Bllumo could create a temporary travel-compatible version and return to the baseline plan afterward.",
+      "Offers bodyweight hotel-room alternatives or brief airport movement sprints, automatically resuming standard routines upon return.",
     icon: Plane,
   },
   {
-    title: "Schedule Changes",
+    title: "Unscheduled Meeting Spikes",
     badge: "Time Constraints",
-    description: "If a user's available time changes unexpectedly during high-workload weeks.",
+    description: "A sudden late afternoon project emergency cuts available personal time by half.",
     plannedAdjustment:
-      "The experience could adjust rather than simply marking the plan as failed.",
+      "Compresses daily focus targets into a concise 15-minute recap block without marking the entire day as failed.",
     icon: Clock,
   },
   {
-    title: "Unexpected Conditions",
-    badge: "Context Shifts",
-    description: "Weather disruptions, fatigue, or temporary environmental constraints.",
+    title: "Fatigue & Energy Slumps",
+    badge: "Recovery Priority",
+    description: "High cognitive fatigue after consecutive late work sessions.",
     plannedAdjustment:
-      "Temporary constraints can result in temporary adaptations rather than unnecessary long-term changes.",
+      "Down-shifts evening study demands to passive audio review or encourages an early sleep window to protect long-term recovery.",
     icon: CloudAlert,
   },
 ];
 
 export function Adaptation() {
   return (
-    <section className="py-20 md:py-28 relative border-t border-white/[0.06] bg-[#07090E]">
+    <section id="adaptation" className="py-20 md:py-28 relative border-t border-white/[0.08] bg-[#07090E] scroll-mt-28">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="max-w-2xl mx-auto text-center mb-16">
           <span className="text-xs font-mono uppercase tracking-wider text-neutral-400 mb-2 block">
-            Real-World Resilience
+            Resilience By Design
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-4">
-            Designed for real life, not perfect schedules.
+            Built for messy weeks, not idealized spreadsheets.
           </h2>
-          <p className="text-sm sm:text-base text-neutral-400 leading-relaxed">
-            Plans often fail because life does not remain constant. Travel happens. Schedules change. Weather changes. Priorities shift temporarily. Bllumo&apos;s long-term vision is to recognize those changes and adjust the active experience without unnecessarily abandoning the user&apos;s underlying goal.
+          <p className="text-sm sm:text-base text-neutral-300 leading-relaxed">
+            These illustrative scenarios describe a planning hypothesis: travel, meetings, and energy changes may require smaller next steps. They are proposed directions, not live product capabilities.
           </p>
         </div>
 
-        {/* 3 Minimal Cards */}
+        {/* 3 Scenario Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           {SCENARIOS.map((card) => {
             const Icon = card.icon;
@@ -77,14 +77,14 @@ export function Adaptation() {
                     {card.title}
                   </h3>
 
-                  <p className="text-xs text-neutral-400 mb-4">
+                  <p className="text-xs text-neutral-400 leading-relaxed mb-4">
                     {card.description}
                   </p>
                 </div>
 
-                <div className="pt-3 border-t border-white/[0.04]">
-                  <span className="text-[10px] font-mono text-neutral-400 block mb-1">
-                    Planned Adaptation
+                <div className="pt-3 border-t border-white/[0.06]">
+                  <span className="text-[10px] font-mono text-neutral-400 block mb-1 uppercase">
+                    Proposed Adjustment
                   </span>
                   <p className="text-xs text-neutral-300 leading-relaxed">
                     {card.plannedAdjustment}
@@ -96,8 +96,8 @@ export function Adaptation() {
         </div>
 
         <div className="mt-10 text-center">
-          <p className="text-xs text-neutral-500 italic max-w-lg mx-auto">
-            Capabilities reflect our developmental vision and will be introduced progressively in early access phases.
+          <p className="text-xs text-neutral-400 max-w-lg mx-auto">
+            These examples illustrate our product roadmap and will be tested incrementally with early alpha users.
           </p>
         </div>
       </div>

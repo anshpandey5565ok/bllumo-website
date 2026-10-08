@@ -1,61 +1,64 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getWaitlistEntries } from "@/lib/waitlist";
+import { deleteWaitlistEntry, getWaitlistEntries } from "@/lib/waitlist";
+import { isAllowedOrigin, isRequestAuthorized } from "@/lib/adminAuth";
 
-const DEFAULT_DEV_KEY = "bllumo-founder-2026";
-
-function isAuthorized(req: NextRequest): boolean {
-  const adminKey = process.env.ADMIN_SECRET_KEY || DEFAULT_DEV_KEY;
-  const authHeader = req.headers.get("authorization");
-  const customHeader = req.headers.get("x-admin-key");
-  const queryKey = req.nextUrl.searchParams.get("key");
-
-  if (authHeader && authHeader.startsWith("Bearer ")) {
-    const token = authHeader.replace("Bearer ", "").trim();
-    if (token === adminKey) return true;
+/**
+ * Escapes fields to prevent CSV formula injection (e.g. cells starting with =, +, -, @)
+ */
+function sanitizeCsvCell(value: string): string {
+  let cleaned = value.replace(/"/g, '""');
+  if (/^[=+\-@\t\r]/.test(cleaned)) {
+    cleaned = `'${cleaned}`;
   }
-
-  if (customHeader && customHeader.trim() === adminKey) {
-    return true;
-  }
-
-  if (queryKey && queryKey.trim() === adminKey) {
-    return true;
-  }
-
-  return false;
+  return `"${cleaned}"`;
 }
 
 export async function GET(req: NextRequest) {
-  if (!isAuthorized(req)) {
+  let authorized = false;
+  try { authorized = await isRequestAuthorized(req); }
+  catch { return NextResponse.json({ error: "Authentication service unavailable." }, { status: 503 }); }
+  if (!authorized) {
     return NextResponse.json(
-      { error: "Unauthorized access. Valid admin key required." },
-      { status: 401 }
+      { error: "Unauthorized access. Valid administrator session required." },
+      {
+        status: 401,
+        headers: {
+          "X-Robots-Tag": "noindex, nofollow, noarchive",
+        },
+      }
     );
   }
 
-  const entries = await getWaitlistEntries();
+  let entries;
+  try {
+    entries = await getWaitlistEntries();
+  } catch {
+    return NextResponse.json({ error: "Durable storage unavailable." }, { status: 503 });
+  }
   const format = req.nextUrl.searchParams.get("format");
 
   if (format === "csv") {
-    // Generate CSV string
+    // Generate CSV string safely
     const headers = ["ID", "First Name", "Email", "Interest Category", "Consent", "Created At", "Source"];
     const rows = entries.map((e) => [
-      `"${e.id}"`,
-      `"${e.first_name.replace(/"/g, '""')}"`,
-      `"${e.email.replace(/"/g, '""')}"`,
-      `"${(e.interest || "General").replace(/"/g, '""')}"`,
+      sanitizeCsvCell(e.id),
+      sanitizeCsvCell(e.first_name || ""),
+      sanitizeCsvCell(e.email),
+      sanitizeCsvCell(e.interest || "General"),
       e.consent ? "Yes" : "No",
-      `"${e.created_at}"`,
-      `"${(e.source || "website").replace(/"/g, '""')}"`,
+      sanitizeCsvCell(e.created_at),
+      sanitizeCsvCell(e.source || "website"),
     ]);
 
-    const csvContent = [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
+    const csvContent = [headers.join(","), ...rows.map((r) => r.join(","))].join("\r\n");
 
     return new NextResponse(csvContent, {
       status: 200,
       headers: {
         "Content-Type": "text/csv; charset=utf-8",
         "Content-Disposition": 'attachment; filename="bllumo_waitlist.csv"',
+        "X-Robots-Tag": "noindex, nofollow, noarchive",
+        "Cache-Control": "no-store, no-cache, must-revalidate, private",
       },
     });
   }
@@ -68,9 +71,34 @@ export async function GET(req: NextRequest) {
     interestBreakdown[key] = (interestBreakdown[key] || 0) + 1;
   });
 
-  return NextResponse.json({
-    total,
-    interestBreakdown,
-    entries: entries.reverse(), // most recent first
-  });
+  return NextResponse.json(
+    {
+      total,
+      interestBreakdown,
+      entries: [...entries].reverse(), // most recent first
+    },
+    {
+      headers: {
+        "X-Robots-Tag": "noindex, nofollow, noarchive",
+        "Cache-Control": "no-store, no-cache, must-revalidate, private",
+      },
+    }
+  );
+}
+
+export async function DELETE(req: NextRequest) {
+  let authorized = false;
+  try { authorized = await isRequestAuthorized(req); }
+  catch { return NextResponse.json({ error: "Authentication service unavailable." }, { status: 503 }); }
+  if (!authorized) return NextResponse.json({ error: "Unauthorized access." }, { status: 401 });
+  if (!isAllowedOrigin(req)) return NextResponse.json({ error: "Forbidden: Request origin not authorized." }, { status: 403 });
+  const body = await req.json().catch(() => null);
+  const email = body && typeof body === "object" && typeof (body as { email?: unknown }).email === "string" ? (body as { email: string }).email.trim() : "";
+  if (!email) return NextResponse.json({ error: "Email address required." }, { status: 422 });
+  try {
+    await deleteWaitlistEntry(email);
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json({ error: "Durable storage unavailable." }, { status: 503 });
+  }
 }

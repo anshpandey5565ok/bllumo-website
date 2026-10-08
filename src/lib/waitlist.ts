@@ -1,116 +1,60 @@
-import fs from "fs";
-import path from "path";
-import crypto from "crypto";
+import "server-only";
+import crypto from "node:crypto";
+import { rpc, storageMode } from "./storage";
 
 export interface WaitlistEntry {
   id: string;
-  first_name: string;
+  first_name?: string;
   email: string;
   interest?: string;
   consent: boolean;
+  consent_timestamp: string;
+  consent_version: string;
   created_at: string;
   source: string;
+  age_confirmed: boolean;
 }
 
-const DATA_DIR = path.join(process.cwd(), "data");
-const DATA_FILE = path.join(DATA_DIR, "waitlist.json");
-
-// Ensure data folder and file exists
-function ensureFileExists(): void {
-  try {
-    if (!fs.existsSync(DATA_DIR)) {
-      fs.mkdirSync(DATA_DIR, { recursive: true });
-    }
-    if (!fs.existsSync(DATA_FILE)) {
-      fs.writeFileSync(DATA_FILE, JSON.stringify([], null, 2), "utf-8");
-    }
-  } catch (error) {
-    console.error("Error creating waitlist data directory or file:", error);
-  }
+export function emailHash(email: string): string {
+  const key = process.env.SUPPRESSION_SECRET;
+  if (!key || key.length < 32) throw new Error("Suppression configuration unavailable");
+  return crypto.createHmac("sha256", key).update(email.trim().toLowerCase()).digest("hex");
 }
 
 export async function getWaitlistEntries(): Promise<WaitlistEntry[]> {
-  try {
-    ensureFileExists();
-    const rawData = fs.readFileSync(DATA_FILE, "utf-8");
-    return JSON.parse(rawData) as WaitlistEntry[];
-  } catch (error) {
-    console.error("Error reading waitlist file:", error);
-    return [];
+  const entries: WaitlistEntry[] = [];
+  let after: string | null = null;
+  for (;;) {
+    const batch: WaitlistEntry[] = await rpc<WaitlistEntry[]>("bllumo_list", { p_after: after });
+    if (!Array.isArray(batch)) throw new Error("Invalid storage response");
+    entries.push(...batch);
+    if (batch.length === 0) break;
+    const next: string = batch[batch.length - 1].id;
+    if (next === after) throw new Error("Invalid storage cursor");
+    after = next;
   }
+  return entries.sort((a, b) => a.created_at.localeCompare(b.created_at) || a.id.localeCompare(b.id));
 }
 
 export async function addWaitlistEntry(params: {
-  first_name: string;
-  email: string;
-  interest?: string;
-  consent: boolean;
-  source?: string;
-}): Promise<{ success: boolean; duplicate?: boolean; entry?: WaitlistEntry; error?: string }> {
-  try {
-    ensureFileExists();
+  first_name?: string; email: string; interest?: string; consent: boolean; source?: string;
+  age_confirmed: boolean;
+}): Promise<void> {
+  storageMode();
+  const email = params.email.trim().toLowerCase();
+  const now = new Date().toISOString();
+  const outcome = await rpc<string>("bllumo_register", {
+    p_entry: {
+      id: crypto.randomUUID(), email, first_name: params.first_name || "",
+      interest: params.interest || "General Interest", consent: params.consent,
+      consent_timestamp: now, consent_version: "adult_waitlist_2026_10",
+      created_at: now, source: params.source || "website", age_confirmed: params.age_confirmed,
+    },
+    p_email_hash: emailHash(email),
+  });
+  if (!["registered", "duplicate", "suppressed"].includes(outcome)) throw new Error("Invalid storage acknowledgement");
+}
 
-    const normalizedEmail = params.email.trim().toLowerCase();
-    const entries = await getWaitlistEntries();
-
-    // Check for existing duplicate
-    const existing = entries.find((e) => e.email.toLowerCase() === normalizedEmail);
-    if (existing) {
-      return {
-        success: true,
-        duplicate: true,
-        entry: existing,
-      };
-    }
-
-    const newEntry: WaitlistEntry = {
-      id: crypto.randomUUID(),
-      first_name: params.first_name.trim(),
-      email: normalizedEmail,
-      interest: params.interest?.trim() || "General Access",
-      consent: Boolean(params.consent),
-      created_at: new Date().toISOString(),
-      source: params.source || "waitlist_page",
-    };
-
-    // If Supabase is configured via environment variables, attempt insert
-    const supabaseUrl = process.env.SUPABASE_URL;
-    const supabaseKey = process.env.SUPABASE_SERVICE_KEY || process.env.SUPABASE_ANON_KEY;
-
-    if (supabaseUrl && supabaseKey) {
-      try {
-        const response = await fetch(`${supabaseUrl}/rest/v1/waitlist`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            apikey: supabaseKey,
-            Authorization: `Bearer ${supabaseKey}`,
-            Prefer: "return=representation",
-          },
-          body: JSON.stringify(newEntry),
-        });
-        if (!response.ok) {
-          console.warn("Supabase insert responded with error:", await response.text());
-        }
-      } catch (err) {
-        console.warn("Could not insert to Supabase, continuing with local store:", err);
-      }
-    }
-
-    // Save locally
-    entries.push(newEntry);
-    fs.writeFileSync(DATA_FILE, JSON.stringify(entries, null, 2), "utf-8");
-
-    return {
-      success: true,
-      duplicate: false,
-      entry: newEntry,
-    };
-  } catch (error) {
-    console.error("Error saving waitlist entry:", error);
-    return {
-      success: false,
-      error: "Unable to process waitlist request. Please try again.",
-    };
-  }
+export async function deleteWaitlistEntry(email: string): Promise<void> {
+  if (await rpc<boolean>("bllumo_delete", { p_email_hash: emailHash(email) }) !== true) throw new Error("Deletion not acknowledged");
 }

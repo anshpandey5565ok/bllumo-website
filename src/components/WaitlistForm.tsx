@@ -5,47 +5,53 @@ import Link from "next/link";
 import { CheckCircle2, ArrowRight, Loader2, AlertCircle } from "lucide-react";
 
 const INTEREST_OPTIONS = [
-  "Health & wellness",
-  "Fitness",
-  "Productivity",
-  "Learning",
-  "Personal organization",
-  "Habits",
-  "Money management",
-  "Something else",
+  "Focus & deep work routines",
+  "Daily habit formation & consistency",
+  "Adaptive fitness & movement pacing",
+  "Personal projects & creative roadmaps",
+  "Skill acquisition & structured learning",
+  "General interest in personal AI",
 ];
 
-export function WaitlistForm() {
+export function WaitlistForm({ enabled }: { enabled: boolean }) {
   const [firstName, setFirstName] = useState("");
   const [email, setEmail] = useState("");
   const [interest, setInterest] = useState("");
   const [consent, setConsent] = useState(false);
+  const [ageConfirmed, setAgeConfirmed] = useState(false);
   const [honeypot, setHoneypot] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
-  const [isDuplicate, setIsDuplicate] = useState(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<{ email?: string; consent?: string; age?: string }>({});
+  const [generalError, setGeneralError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setErrorMessage(null);
+    setGeneralError(null);
+    const errors: { email?: string; consent?: string; age?: string } = {};
 
-    if (!firstName.trim()) {
-      setErrorMessage("Please enter your first name.");
-      return;
-    }
-
-    if (!email.trim() || !email.includes("@") || !email.includes(".")) {
-      setErrorMessage("Please enter a valid email address.");
-      return;
+    const trimmedEmail = email.trim();
+    if (!trimmedEmail) {
+      errors.email = "Please enter your email address.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      errors.email = "Please enter a valid email address (e.g. name@example.com).";
     }
 
     if (!consent) {
-      setErrorMessage("Please agree to receive product and launch updates.");
+      errors.consent = "Please confirm consent to receive email updates before joining.";
+    }
+
+    if (!ageConfirmed) {
+      errors.age = "Please confirm that you are at least 18 years old.";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors);
       return;
     }
 
+    setFieldErrors({});
     setLoading(true);
 
     try {
@@ -53,10 +59,11 @@ export function WaitlistForm() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          first_name: firstName.trim(),
-          email: email.trim(),
+          first_name: firstName.trim() || undefined,
+          email: trimmedEmail,
           interest: interest || "General Interest",
           consent: true,
+          age_confirmed: true,
           source: "homepage",
           honeypot,
         }),
@@ -65,79 +72,89 @@ export function WaitlistForm() {
       const data = await res.json();
 
       if (!res.ok) {
-        throw new Error(data.error || "Unable to join the waitlist. Please try again.");
+        throw new Error(data.error || "Unable to join the waitlist at this time. Please try again.");
       }
 
-      setIsDuplicate(Boolean(data.duplicate));
       setSubmitted(true);
-    } catch (err: any) {
-      setErrorMessage(err.message || "An unexpected error occurred. Please try again.");
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "An unexpected error occurred. Please try again.";
+      setGeneralError(message);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <section id="waitlist" className="py-20 md:py-28 relative">
+    <section id="waitlist" className="py-20 md:py-28 relative scroll-mt-28">
       <div className="max-w-2xl mx-auto px-4 sm:px-6">
-        <div className="surface-card rounded-2xl p-8 sm:p-12">
+        <div className="surface-card rounded-2xl p-6 sm:p-12 border border-white/[0.08] shadow-2xl">
           {/* Header */}
           <div className="text-center mb-8">
-            <span className="text-xs font-mono uppercase tracking-wider text-neutral-400 mb-2 block">
-              Early Access
+            <span className="text-xs font-mono uppercase tracking-wider text-neutral-400 mb-2 block font-semibold">
+              Early Access Waitlist
             </span>
             <h2 className="text-2xl sm:text-3xl font-bold text-white tracking-tight mb-3">
-              Help shape what&apos;s next.
+              Get Bllumo development and launch updates.
             </h2>
-            <p className="text-xs sm:text-sm text-neutral-400 leading-relaxed max-w-lg mx-auto">
-              Bllumo is currently under development. Join the waitlist to receive product updates, early-access opportunities, and launch information.
+            <p className="text-xs sm:text-sm text-neutral-300 leading-relaxed max-w-lg mx-auto">
+              Join the waitlist to follow our progress and hear about possible early-access opportunities. Joining is free. It does not guarantee an invitation or a place in a release.
             </p>
           </div>
 
-          {/* Form / Success State */}
-          {submitted ? (
-            <div className="text-center py-6 space-y-4">
-              <div className="w-10 h-10 rounded-full bg-white/[0.04] border border-white/[0.1] text-white flex items-center justify-center mx-auto">
-                <CheckCircle2 className="w-5 h-5 text-emerald-400" />
+          {/* Submission Outcome / Form */}
+          {!enabled ? (
+            <div role="status" className="text-center py-6 space-y-3">
+              <h3 className="text-lg font-semibold text-white">Registration is temporarily closed.</h3>
+              <p className="text-xs sm:text-sm text-neutral-300 max-w-md mx-auto leading-relaxed">
+                We are verifying storage, eligibility, privacy operations, and contact delivery before accepting registrations.
+              </p>
+            </div>
+          ) : submitted ? (
+            <div
+              role="status"
+              aria-live="polite"
+              className="text-center py-6 space-y-4"
+            >
+              <div className="w-12 h-12 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
+                <CheckCircle2 className="w-6 h-6" />
               </div>
 
               <div className="space-y-2">
                 <h3 className="text-lg font-semibold text-white">
-                  You&apos;re on the list.
+                  You&apos;re on the waitlist.
                 </h3>
-                <p className="text-xs text-neutral-300">
-                  Thanks for joining Bllumo, <span className="text-white font-medium">{firstName}</span>. We&apos;ll keep you updated as we move toward launch.
+                <p className="text-xs sm:text-sm text-neutral-300 max-w-md mx-auto leading-relaxed">
+                  Thank you for your interest{firstName ? `, ${firstName}` : ""}. We have recorded your registration and will send updates as developmental milestones and alpha testing cohorts open.
                 </p>
-                {isDuplicate && (
-                  <p className="text-xs text-neutral-400 bg-white/[0.02] border border-white/[0.06] rounded-lg p-2.5 max-w-sm mx-auto">
-                    Note: Your email was already registered. We have refreshed your waitlist reservation.
-                  </p>
-                )}
               </div>
 
-              <button
-                type="button"
-                onClick={() => {
-                  setSubmitted(false);
-                  setFirstName("");
-                  setEmail("");
-                  setInterest("");
-                  setConsent(false);
-                }}
-                className="text-xs text-neutral-400 hover:text-white underline underline-offset-4 pt-2"
-              >
-                Register another email
-              </button>
+              <div className="pt-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSubmitted(false);
+                    setFirstName("");
+                    setEmail("");
+                    setInterest("");
+                    setConsent(false);
+                    setAgeConfirmed(false);
+                    setFieldErrors({});
+                  }}
+                  className="text-xs text-neutral-400 hover:text-white underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-indigo-400 focus-visible:outline-offset-2 rounded"
+                >
+                  Register another email
+                </button>
+              </div>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-4" noValidate>
-              {errorMessage && (
+              {generalError && (
                 <div
                   role="alert"
-                  className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs flex items-center gap-2"
+                  className="p-3.5 rounded-xl bg-rose-500/10 border border-rose-500/30 text-rose-300 text-xs flex items-center gap-2"
                 >
-                  <AlertCircle className="w-3.5 h-3.5 shrink-0" />
-                  <span>{errorMessage}</span>
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <span>{generalError}</span>
                 </div>
               )}
 
@@ -149,57 +166,87 @@ export function WaitlistForm() {
                   autoComplete="off"
                   value={honeypot}
                   onChange={(e) => setHoneypot(e.target.value)}
+                  aria-hidden="true"
                 />
               </div>
 
-              {/* First Name & Email */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label htmlFor="first_name" className="text-xs text-neutral-400 font-mono">
-                    First Name *
+              {/* First Name (Optional) & Email (Required) */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="space-y-1.5">
+                  <label
+                    htmlFor="waitlist_first_name"
+                    className="text-xs text-neutral-300 font-mono block font-medium"
+                  >
+                    First Name <span className="text-neutral-500 font-normal">(Optional)</span>
                   </label>
                   <input
-                    id="first_name"
+                    id="waitlist_first_name"
                     type="text"
-                    required
-                    placeholder="Alex"
+                    placeholder="e.g. Alex"
                     autoComplete="given-name"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-lg bg-[#060709] border border-white/[0.08] text-white placeholder-neutral-600 text-xs focus:outline-none focus:border-white/30 transition-colors"
+                    className="w-full px-4 py-3 rounded-xl bg-[#060709] border border-white/[0.1] text-white placeholder-neutral-500 text-base sm:text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
                   />
                 </div>
 
-                <div className="space-y-1">
-                  <label htmlFor="email_address" className="text-xs text-neutral-400 font-mono">
-                    Email Address *
+                <div className="space-y-1.5">
+                  <label
+                    htmlFor="waitlist_email"
+                    className="text-xs text-neutral-300 font-mono block font-medium"
+                  >
+                    Email Address <span className="text-indigo-400">*</span>
                   </label>
                   <input
-                    id="email_address"
+                    id="waitlist_email"
                     type="email"
                     required
-                    placeholder="alex@example.com"
+                    aria-required="true"
+                    aria-invalid={Boolean(fieldErrors.email)}
+                    aria-describedby={fieldErrors.email ? "waitlist_email_error" : undefined}
+                    placeholder="name@example.com"
                     autoComplete="email"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full px-3.5 py-2.5 rounded-lg bg-[#060709] border border-white/[0.08] text-white placeholder-neutral-600 text-xs focus:outline-none focus:border-white/30 transition-colors"
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      if (fieldErrors.email) {
+                        setFieldErrors((prev) => ({ ...prev, email: undefined }));
+                      }
+                    }}
+                    className={`w-full px-4 py-3 rounded-xl bg-[#060709] border text-white placeholder-neutral-500 text-base sm:text-sm focus:outline-none transition-colors ${
+                      fieldErrors.email
+                        ? "border-rose-500/80 focus:ring-1 focus:ring-rose-500"
+                        : "border-white/[0.1] focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                    }`}
                   />
+                  {fieldErrors.email && (
+                    <p
+                      id="waitlist_email_error"
+                      role="alert"
+                      className="text-[11px] text-rose-300 pt-0.5"
+                    >
+                      {fieldErrors.email}
+                    </p>
+                  )}
                 </div>
               </div>
 
-              {/* Interest Selector */}
-              <div className="space-y-1">
-                <label htmlFor="interest" className="text-xs text-neutral-400 font-mono">
-                  Primary Interest (Optional)
+              {/* Interest Selector (Optional) */}
+              <div className="space-y-1.5">
+                <label
+                  htmlFor="waitlist_interest"
+                  className="text-xs text-neutral-300 font-mono block font-medium"
+                >
+                  Product Interest <span className="text-neutral-500 font-normal">(Optional)</span>
                 </label>
                 <select
-                  id="interest"
+                  id="waitlist_interest"
                   value={interest}
                   onChange={(e) => setInterest(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-lg bg-[#060709] border border-white/[0.08] text-white text-xs focus:outline-none focus:border-white/30 transition-colors"
+                  className="w-full px-4 py-3 rounded-xl bg-[#060709] border border-white/[0.1] text-white text-base sm:text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-colors"
                 >
                   <option value="" className="bg-[#0B0D14] text-neutral-400">
-                    Select what you&apos;d like Bllumo to help with...
+                    Select an area of interest...
                   </option>
                   {INTEREST_OPTIONS.map((opt) => (
                     <option key={opt} value={opt} className="bg-[#0B0D14] text-white">
@@ -209,55 +256,105 @@ export function WaitlistForm() {
                 </select>
               </div>
 
-              {/* Consent Checkbox */}
-              <div className="pt-1">
-                <label className="flex items-start gap-2.5 cursor-pointer">
+              {/* Explicit Unchecked Consent Checkbox */}
+              <div className="pt-2">
+                <div className="flex items-start gap-3">
                   <input
+                    id="waitlist_consent"
                     type="checkbox"
                     required
+                    aria-required="true"
+                    aria-invalid={Boolean(fieldErrors.consent)}
+                    aria-describedby={fieldErrors.consent ? "waitlist_consent_error" : undefined}
                     checked={consent}
-                    onChange={(e) => setConsent(e.target.checked)}
-                    className="mt-0.5 w-3.5 h-3.5 rounded border-white/20 bg-[#060709] text-white focus:ring-0 focus:ring-offset-0 cursor-pointer"
+                    onChange={(e) => {
+                      setConsent(e.target.checked);
+                      if (fieldErrors.consent) {
+                        setFieldErrors((prev) => ({ ...prev, consent: undefined }));
+                      }
+                    }}
+                    className="mt-1 w-4 h-4 rounded border-white/20 bg-[#060709] text-indigo-600 focus:ring-indigo-500 cursor-pointer shrink-0"
                   />
-                  <span className="text-[11px] text-neutral-400 leading-tight">
-                    I agree to receive Bllumo product and launch updates. I understand that I can unsubscribe at any time. *
-                  </span>
-                </label>
+                  <label
+                    htmlFor="waitlist_consent"
+                    className="text-xs text-neutral-300 leading-relaxed cursor-pointer select-none"
+                  >
+                    I want to receive Bllumo development updates and early-access invitations by email. I can unsubscribe at any time. <span className="text-indigo-400">*</span>
+                  </label>
+                </div>
+                {fieldErrors.consent && (
+                  <p
+                    id="waitlist_consent_error"
+                    role="alert"
+                    className="text-[11px] text-rose-300 pt-1 pl-7"
+                  >
+                    {fieldErrors.consent}
+                  </p>
+                )}
+              </div>
+
+              <div className="pt-1">
+                <div className="flex items-start gap-3">
+                  <input
+                    id="waitlist_age"
+                    type="checkbox"
+                    required
+                    aria-required="true"
+                    aria-invalid={Boolean(fieldErrors.age)}
+                    aria-describedby={fieldErrors.age ? "waitlist_age_error" : undefined}
+                    checked={ageConfirmed}
+                    onChange={(e) => {
+                      setAgeConfirmed(e.target.checked);
+                      if (fieldErrors.age) setFieldErrors((prev) => ({ ...prev, age: undefined }));
+                    }}
+                    className="mt-1 w-4 h-4 rounded border-white/20 bg-[#060709] text-indigo-600 focus:ring-indigo-500 cursor-pointer shrink-0"
+                  />
+                  <label htmlFor="waitlist_age" className="text-xs text-neutral-300 leading-relaxed cursor-pointer select-none">
+                    I confirm that I am at least 18 years old. <span className="text-indigo-400">*</span>
+                  </label>
+                </div>
+                {fieldErrors.age && <p id="waitlist_age_error" role="alert" className="text-[11px] text-rose-300 pt-1 pl-7">{fieldErrors.age}</p>}
               </div>
 
               {/* Legal Notice */}
-              <p className="text-[10px] text-neutral-500 leading-normal">
-                By joining, you agree to our{" "}
-                <Link href="/privacy" className="text-neutral-400 hover:text-white underline underline-offset-2">
+              <p className="text-xs text-neutral-400 leading-normal pt-1">
+                By submitting, you agree to our{" "}
+                <Link
+                  href="/privacy"
+                  className="text-neutral-300 hover:text-white underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-indigo-400 focus-visible:outline-offset-2 rounded"
+                >
                   Privacy Policy
                 </Link>{" "}
                 and{" "}
-                <Link href="/terms" className="text-neutral-400 hover:text-white underline underline-offset-2">
+                <Link
+                  href="/terms"
+                  className="text-neutral-300 hover:text-white underline underline-offset-2 focus-visible:outline-2 focus-visible:outline-indigo-400 focus-visible:outline-offset-2 rounded"
+                >
                   Terms of Service
                 </Link>.
               </p>
 
-              {/* Submit Button */}
+              {/* Submit Button (Comfortable touch target min 44px) */}
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-2.5 px-4 rounded-lg bg-white hover:bg-neutral-200 text-black font-medium text-xs transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+                className="w-full min-h-[44px] py-3 px-5 rounded-xl bg-white hover:bg-neutral-200 text-black font-semibold text-sm transition-all flex items-center justify-center gap-2 disabled:opacity-50 focus-visible:outline-2 focus-visible:outline-indigo-400 focus-visible:outline-offset-2"
               >
                 {loading ? (
                   <>
-                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                    <Loader2 className="w-4 h-4 animate-spin" />
                     <span>Processing...</span>
                   </>
                 ) : (
                   <>
-                    <span>Join the Waitlist</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <span>Join the waitlist</span>
+                    <ArrowRight className="w-4 h-4" />
                   </>
                 )}
               </button>
 
-              <div className="text-center pt-2 text-[10px] text-neutral-500 font-mono">
-                Minimal data: No passwords or financial credentials collected.
+              <div className="text-center pt-2 text-xs text-neutral-400 font-mono">
+                No passwords, credit cards, or sensitive personal data collected.
               </div>
             </form>
           )}

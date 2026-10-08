@@ -6,40 +6,40 @@ export function Trust() {
   const pillars = [
     {
       icon: ShieldCheck,
-      title: "Privacy-conscious",
-      badge: "Minimization",
+      title: "Data Minimization",
+      badge: "Principle",
       description:
-        "We aim to collect only the information necessary to provide and improve Bllumo's services. We do not sell personal data for monetary compensation.",
+        "We collect only the minimum information necessary to communicate project updates and facilitate early access. We do not sell your personal data.",
     },
     {
       icon: UserCheck,
-      title: "User control",
-      badge: "Authority",
+      title: "User Agency & Portability",
+      badge: "Control",
       description:
-        "Our goal is to give users meaningful control over their information and personalized experiences, with complete visibility into used context.",
+        "You retain direct control over your communications preferences and waitlist participation, with simple unsubscription and deletion mechanisms available at any time.",
     },
     {
       icon: Scale,
-      title: "AI with boundaries",
-      badge: "Scope",
+      title: "Responsible Boundaries",
+      badge: "Safeguards",
       description:
-        "Bllumo is intended to support users with planning and organization. It is not intended to replace qualified professionals where medical or financial advice is required.",
+        "Bllumo is an organizational and personal planning system. It is not designed or authorized to provide licensed medical, legal, or financial advisory services.",
     },
   ];
 
   return (
-    <section id="trust" className="py-20 md:py-28 relative border-t border-white/[0.06] bg-[#07090E]">
+    <section id="trust" className="py-20 md:py-28 relative border-t border-white/[0.08] bg-[#07090E] scroll-mt-28">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Header */}
         <div className="max-w-2xl mx-auto text-center mb-16">
-          <span className="text-xs font-mono uppercase tracking-wider text-neutral-400 mb-2 block">
-            Principles
+          <span className="text-xs font-mono uppercase tracking-wider text-neutral-400 mb-2 block font-semibold">
+            Principles & Safeguards
           </span>
           <h2 className="text-3xl sm:text-4xl font-bold text-white tracking-tight mb-4">
-            Built with responsibility in mind.
+            Built with realistic safeguards and clear boundaries.
           </h2>
-          <p className="text-sm sm:text-base text-neutral-400 leading-relaxed">
-            AI should be trustworthy, transparent, and grounded in realistic safeguards.
+          <p className="text-sm sm:text-base text-neutral-300 leading-relaxed">
+            We ground our product development in verifiable security practices and clear functional scope.
           </p>
         </div>
 
@@ -71,8 +71,8 @@ export function Trust() {
                   </p>
                 </div>
 
-                <div className="mt-6 pt-3 border-t border-white/[0.04] text-[11px] text-neutral-500">
-                  Built on ethical standards
+                <div className="mt-6 pt-3 border-t border-white/[0.06] text-xs text-neutral-400">
+                  Documented in our public policies
                 </div>
               </div>
             );

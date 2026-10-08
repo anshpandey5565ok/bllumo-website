@@ -15,24 +15,26 @@ const geistMono = Geist_Mono({
   display: "swap",
 });
 
+const SITE_HOSTNAME = "https://www.bllumo.com";
+
 export const metadata: Metadata = {
-  metadataBase: new URL("https://bllumo.com"),
+  metadataBase: new URL(SITE_HOSTNAME),
   title: {
-    default: "Bllumo — AI That Builds Around Your Life",
+    default: "Bllumo — Turn Personal Goals Into Plans That Fit Your Life",
     template: "%s | Bllumo",
   },
   description:
-    "Bllumo is building a personalized AI platform designed around your goals, preferences, and changing real-world needs. Join the waitlist for early access.",
+    "Bllumo is building an AI platform that turns your goals, preferences, and practical constraints into personalized plans that adapt as circumstances change.",
   keywords: [
     "Bllumo",
     "Personal AI",
-    "Adaptive AI",
-    "AI platform",
-    "Personalized systems",
-    "Goal achievement",
-    "Early access waitlist",
+    "Adaptive Planning",
+    "Goal Planning AI",
+    "Adaptive Productivity",
+    "Personalized Routines",
+    "Early Access Waitlist",
   ],
-  authors: [{ name: "Bllumo Team" }],
+  authors: [{ name: "Bllumo" }],
   creator: "Bllumo",
   publisher: "Bllumo",
   formatDetection: {
@@ -43,26 +45,26 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://bllumo.com",
+    url: SITE_HOSTNAME,
     siteName: "Bllumo",
-    title: "Bllumo — Personalized AI for Your Life",
+    title: "Bllumo — Turn Personal Goals Into Plans That Fit Your Life",
     description:
-      "One intelligent platform designed to understand your goals and build personalized experiences around you.",
+      "Bllumo is building an AI platform that turns your goals, preferences, and practical constraints into personalized plans.",
     images: [
       {
-        url: "/android-chrome-512x512.png",
-        width: 512,
-        height: 512,
-        alt: "Bllumo — AI That Builds Around Your Life",
+        url: "/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Bllumo — Personal AI · In Development",
       },
     ],
   },
   twitter: {
-    card: "summary",
-    title: "Bllumo — Personalized AI for Your Life",
+    card: "summary_large_image",
+    title: "Bllumo — Turn Personal Goals Into Plans That Fit Your Life",
     description:
-      "One intelligent platform designed to understand your goals and build personalized experiences around you.",
-    images: ["/android-chrome-512x512.png"],
+      "Bllumo is building an AI platform that turns your goals, preferences, and practical constraints into personalized plans.",
+    images: ["/og-image.png"],
     creator: "@bllumo",
   },
   robots: {
@@ -77,7 +79,7 @@ export const metadata: Metadata = {
     },
   },
   alternates: {
-    canonical: "https://bllumo.com",
+    canonical: SITE_HOSTNAME,
   },
   icons: {
     icon: [
@@ -99,23 +101,28 @@ export default function RootLayout({
 }) {
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    name: "Bllumo",
-    applicationCategory: "LifestyleApplication",
-    operatingSystem: "Web, Cross-platform",
-    description:
-      "A personalized AI platform that understands what you want to achieve, creates an experience around your needs, and adapts as your life changes.",
-    offers: {
-      "@type": "Offer",
-      price: "0",
-      priceCurrency: "USD",
-      availability: "https://schema.org/PreOrder",
-    },
-    creator: {
-      "@type": "Organization",
-      name: "Bllumo",
-      url: "https://bllumo.com",
-    },
+    "@graph": [
+      {
+        "@type": "Organization",
+        name: "Bllumo",
+        url: SITE_HOSTNAME,
+        logo: `${SITE_HOSTNAME}/android-chrome-512x512.png`,
+        description: "Adaptive personal AI platform under active development.",
+      },
+      {
+        "@type": "SoftwareApplication",
+        name: "Bllumo",
+        applicationCategory: "ProductivityApplication",
+        operatingSystem: "Web, Cross-platform",
+        description:
+          "An AI platform designed to turn goals, preferences, and practical constraints into personalized plans.",
+        creator: {
+          "@type": "Organization",
+          name: "Bllumo",
+          "url": SITE_HOSTNAME,
+        },
+      },
+    ],
   };
 
   return (
@@ -130,6 +137,13 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-[#070A12] text-[#F8FAFC] antialiased selection:bg-indigo-500/30 selection:text-indigo-200">
+        {/* Accessible Skip to Main Content Link */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2.5 focus:bg-indigo-600 focus:text-white focus:rounded-lg focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-white text-xs font-semibold"
+        >
+          Skip to main content
+        </a>
         {children}
         <CookieConsent />
       </body>

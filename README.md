@@ -1,4 +1,17 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a [Next.js](https://nextjs.org) waitlist application. Production hosting is Vercel behind Cloudflare, based on the public response headers verified during the readiness pass. Registrations use Supabase as the authoritative store; local file storage is development-only.
+
+## Production storage and release configuration
+
+1. Create a dedicated Supabase project and apply [`supabase/migrations/202610080001_authoritative_store.sql`](supabase/migrations/202610080001_authoritative_store.sql) with the migration owner. The migration keeps registrations, hashed deletion suppressions, admin sessions, and rate limits in a private schema and exposes only narrowly scoped server RPCs.
+2. Set the server-only variables in [`.env.example`](.env.example) in Vercel Project Settings. Keep `SUPABASE_SERVICE_KEY`, `ADMIN_SECRET_KEY`, `ADMIN_SESSION_SECRET`, `SUPPRESSION_SECRET`, and `RATE_LIMIT_SECRET` out of browser variables and logs.
+3. Set `BLLUMO_STORAGE=supabase`, `APP_ORIGIN=https://www.bllumo.com`, and keep `WAITLIST_ENABLED=false` while the private owner checklist is incomplete. Registration returns an error when the durable write or required configuration is unavailable.
+4. Record the actual Supabase region, backup retention, waitlist retention, deletion workflow, and verified inbox results. Then obtain qualified privacy review and set the release gates. Do not claim a provider or region on the public policy until those values are confirmed.
+
+Development can use `BLLUMO_STORAGE=development-file` and an isolated `BLLUMO_DATA_DIR`; this state is private test data and is never a production fallback.
+
+## Readiness checks
+
+The release pass must exercise restart persistence, concurrent submissions against two processes, database failure, duplicate registration, admin listing/export/deletion consistency, session-cookie replay after logout, token tampering and expiry, missing-secret behavior, origin protection, and shared rate limiting. Use isolated test data and do not print secrets.
 
 ## Getting Started
 
